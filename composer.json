@@ -1,0 +1,18 @@
+{
+    "name": "christiancannata/php-api",
+    "description": "My first MVC API REST WS",
+    "autoload": {
+        "psr-4": {
+            "Christiancannata\\PhpApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "christian cannata",
+            "email": "christian1488@hotmail.it"
+        }
+    ],
+    "require": {
+        "setasign/fpdf": "^1.8"
+    }
+}
