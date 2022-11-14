@@ -41,7 +41,7 @@ class UserModel
 
         $statement = "
             SELECT 
-                id, name, email
+                id, name, email, role_id
             FROM
                 users
             WHERE id = :id ;
@@ -125,5 +125,16 @@ class UserModel
         ]);
         return true;
 
+    }
+
+    public function getLoggedUser($email, $password)
+    {
+        /*
+         * Logica per cercare l'utente tramite email e password
+         *
+         */
+
+        $userLogged = $this->findById(1);
+        return $userLogged;
     }
 }

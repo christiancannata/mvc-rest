@@ -15,9 +15,10 @@ class UserController
     public function index(Request $request)
     {
 
+        $loggedUser = $request->getLoggedUser();
+
         $userModel = new UserModel();
         $users = $userModel->findAll();
-
 
         $response = new Response();
 

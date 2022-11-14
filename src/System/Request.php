@@ -2,6 +2,9 @@
 
 namespace Christiancannata\PhpApi\System;
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 class Request
 {
 
@@ -10,6 +13,7 @@ class Request
     private $body;
     private $uri;
     private $queryParams;
+    public $loggedUser;
 
     public function __construct()
     {
@@ -99,4 +103,40 @@ class Request
         return $errors;
 
     }
+
+    public function isAuth()
+    {
+        $headers = $this->getHeaders();
+
+        if (empty($headers['Authorization'])) {
+            return false;
+        }
+
+        $token = str_replace("Bearer ", "", $headers['Authorization']);
+
+        $key = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/../config/private_key.key');
+
+        try {
+            $loggedUser = JWT::decode($token, new Key($key, 'HS256'));
+            $this->setLoggedUser($loggedUser);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return $loggedUser;
+
+    }
+
+
+    public function getLoggedUser()
+    {
+        return $this->loggedUser;
+    }
+
+    public function setLoggedUser($loggedUser)
+    {
+        $this->loggedUser = $loggedUser;
+    }
+
+
 }

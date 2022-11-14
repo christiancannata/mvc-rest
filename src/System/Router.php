@@ -24,11 +24,13 @@ class Router
         $controllerName = null;
         $methodName = null;
         $param = null;
+        $isAuth = false;
 
         foreach ($this->routes as $route) {
             if ($route['method'] == $request->getMethod() && $route['uri'] == $request->getUri()) {
                 $controllerName = $route['controller'];
                 $methodName = $route['action'];
+                $isAuth = $route['auth'];
             }
         }
 
@@ -48,12 +50,27 @@ class Router
                 if ($route['method'] == $request->getMethod() && $route['uri'] == $uri) {
                     $controllerName = $route['controller'];
                     $methodName = $route['action'];
+                    $isAuth = $route['auth'];
+
                 }
             }
 
         }
 
         if ($controllerName && $methodName) {
+
+            if ($isAuth) {
+                $loggedUser = $request->isAuth();
+
+                if (!$loggedUser) {
+                    $response = new Response();
+                    $response->renderJson([
+                        'message' => 'Login error'
+                    ], 401);
+                }
+
+            }
+
             $controller = new $controllerName();
             $controller->$methodName($request, $param);
         }
