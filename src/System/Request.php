@@ -18,7 +18,7 @@ class Request
     public function __construct()
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->uri = $_SERVER['REQUEST_URI'];
+        $this->uri = strtok($_SERVER["REQUEST_URI"], '?');
         $this->headers = getallheaders();
         $this->queryParams = $_GET;
         $this->body = file_get_contents('php://input');
